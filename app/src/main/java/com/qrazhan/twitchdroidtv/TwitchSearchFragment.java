@@ -8,8 +8,10 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.ObjectAdapter;
-import android.support.v17.leanback.widget.OnItemClickedListener;
+import android.support.v17.leanback.widget.OnItemViewClickedListener;
+import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
+import android.support.v17.leanback.widget.RowPresenter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -103,7 +105,7 @@ public class TwitchSearchFragment extends SearchFragment
         mCardPresenter = new SearchCardPresenter();
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
         setSearchResultProvider(this);
-        setOnItemClickedListener(getDefaultItemClickedListener());
+        setOnItemViewClickedListener(getDefaultItemClickedListener());
         mDelayedLoad = new SearchRunnable();
     }
 
@@ -134,10 +136,10 @@ public class TwitchSearchFragment extends SearchFragment
         return true;
     }
 
-    protected OnItemClickedListener getDefaultItemClickedListener() {
-        return new OnItemClickedListener() {
+    protected OnItemViewClickedListener getDefaultItemClickedListener() {
+        return new OnItemViewClickedListener() {
             @Override
-            public void onItemClicked(Object item, Row row) {
+            public void onItemClicked(Presenter.ViewHolder viewHolder, Object item, RowPresenter.ViewHolder viewHolder1, Row row) {
                 if (item instanceof Stream) {
                     Stream stream = (Stream) item;
                     if(!stream.getVertical()) {

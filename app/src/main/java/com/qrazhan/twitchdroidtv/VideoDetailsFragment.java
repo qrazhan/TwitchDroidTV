@@ -1,10 +1,5 @@
 package com.qrazhan.twitchdroidtv;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,14 +17,21 @@ import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.OnActionClickedListener;
-import android.support.v17.leanback.widget.OnItemClickedListener;
+import android.support.v17.leanback.widget.OnItemViewClickedListener;
+import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
+import android.support.v17.leanback.widget.RowPresenter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 
 public class VideoDetailsFragment extends DetailsFragment {
     private static final String TAG = "VideoDetailsFragment";
@@ -68,7 +70,7 @@ public class VideoDetailsFragment extends DetailsFragment {
         selectedStream = (Stream) getActivity().getIntent().getSerializableExtra(MOVIE);
         new DetailRowBuilderTask().execute(selectedStream);
 
-        setOnItemClickedListener(getDefaultItemClickedListener());
+        setOnItemViewClickedListener(getDefaultItemClickedListener());
         updateBackground(selectedStream.getBackgroundImageURI());
 
     }
@@ -139,7 +141,7 @@ public class VideoDetailsFragment extends DetailsFragment {
                 listRowAdapter.add(list.get(j % 5));
             }
 
-            HeaderItem header = new HeaderItem(0, subcategories[0], null);
+            HeaderItem header = new HeaderItem(0, subcategories[0]);
             adapter.add(new ListRow(header, listRowAdapter));
 
             setAdapter(adapter);
@@ -147,10 +149,10 @@ public class VideoDetailsFragment extends DetailsFragment {
 
     }
 
-    protected OnItemClickedListener getDefaultItemClickedListener() {
-        return new OnItemClickedListener() {
+    protected OnItemViewClickedListener getDefaultItemClickedListener() {
+        return new OnItemViewClickedListener() {
             @Override
-            public void onItemClicked(Object item, Row row) {
+            public void onItemClicked(Presenter.ViewHolder viewHolder, Object item, RowPresenter.ViewHolder viewHolder1, Row row) {
                 if (item instanceof Stream) {
                     Stream stream = (Stream) item;
                     Intent intent = new Intent(getActivity(), DetailsActivity.class);
