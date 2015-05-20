@@ -1,12 +1,5 @@
 package com.qrazhan.twitchdroidtv;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -18,10 +11,11 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
-import android.support.v17.leanback.widget.OnItemClickedListener;
-import android.support.v17.leanback.widget.OnItemSelectedListener;
+import android.support.v17.leanback.widget.OnItemViewClickedListener;
+import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
+import android.support.v17.leanback.widget.RowPresenter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -36,6 +30,13 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainFragment extends BrowseFragment {
@@ -119,8 +120,8 @@ public class MainFragment extends BrowseFragment {
                     }
                 });
 
-        mRowsAdapter.add(new ListRow(new HeaderItem(0, "Featured Streams", null), featuredRowAdapter));
-        mRowsAdapter.add(new ListRow(new HeaderItem(0, "Top Games", null), gamesRowAdapter));
+        mRowsAdapter.add(new ListRow(new HeaderItem(0, "Featured Streams"), featuredRowAdapter));
+        mRowsAdapter.add(new ListRow(new HeaderItem(0, "Top Games"), gamesRowAdapter));
 
         setAdapter(mRowsAdapter);
 
@@ -159,8 +160,8 @@ public class MainFragment extends BrowseFragment {
     }
 
     private void setupEventListeners() {
-        setOnItemSelectedListener(getDefaultItemSelectedListener());
-        setOnItemClickedListener(getDefaultItemClickedListener());
+        setOnItemViewSelectedListener(getDefaultItemSelectedListener());
+        setOnItemViewClickedListener(getDefaultItemClickedListener());
         setOnSearchClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,10 +170,10 @@ public class MainFragment extends BrowseFragment {
         });
     }
 
-    protected OnItemSelectedListener getDefaultItemSelectedListener() {
-        return new OnItemSelectedListener() {
+    protected OnItemViewSelectedListener getDefaultItemSelectedListener() {
+        return new OnItemViewSelectedListener() {
             @Override
-            public void onItemSelected(Object item, Row row) {
+            public void onItemSelected(Presenter.ViewHolder viewHolder, Object item, RowPresenter.ViewHolder viewHolder1, Row row) {
 //                if (item instanceof Stream) {
 //                    mBackgroundURI = ((Stream) item).getBackgroundImageURI();
 //                    startBackgroundTimer();
@@ -181,10 +182,10 @@ public class MainFragment extends BrowseFragment {
         };
     }
 
-    protected OnItemClickedListener getDefaultItemClickedListener() {
-        return new OnItemClickedListener() {
+    protected OnItemViewClickedListener getDefaultItemClickedListener() {
+        return new OnItemViewClickedListener() {
             @Override
-            public void onItemClicked(Object item, Row row) {
+            public void onItemClicked(Presenter.ViewHolder viewHolder, Object item, RowPresenter.ViewHolder viewHolder1, Row row) {
                 if (item instanceof Stream) {
                     Stream stream = (Stream) item;
                     if(!stream.getVertical()) {
